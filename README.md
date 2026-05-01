@@ -8,9 +8,15 @@ Production URL:
 
 https://lead-response-systems.vercel.app
 
-Deploy:
+Public website repo:
+
+https://github.com/vedant-yadav-git/lead-response-systems-site
+
+Deploy manually:
 
 ```bash
 cd public_site
 npx vercel@latest deploy --prod --yes
 ```
+
+The public website repo also deploys to Vercel automatically through GitHub Actions on push to `main`.
