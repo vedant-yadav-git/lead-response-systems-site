@@ -346,6 +346,82 @@ h2 {
   font-weight: 800;
 }
 
+.verticals-section {
+  border-top: 1px solid var(--line);
+}
+
+.vertical-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.vertical-grid a,
+.packages a {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--ink);
+  font-weight: 850;
+  padding: 16px;
+  text-decoration: none;
+}
+
+.vertical-grid a:hover,
+.packages a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.subhero {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  padding: 112px clamp(18px, 4vw, 54px) 58px;
+  background: #101b18;
+  color: var(--white);
+}
+
+.subhero > div {
+  width: min(980px, 100%);
+  margin: 0 auto;
+}
+
+.split-section {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(360px, 0.7fr);
+  gap: 34px;
+  border-top: 1px solid var(--line);
+}
+
+.detail-panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  padding: 24px;
+}
+
+.detail-panel h3 {
+  font-size: 28px;
+}
+
+.detail-panel ul {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0 0;
+  padding-left: 20px;
+  color: var(--muted);
+}
+
+.vertical-card-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.packages.compact h3 {
+  font-size: 26px;
+}
+
 .audit-section {
   display: grid;
   grid-template-columns: minmax(0, 0.78fr) minmax(360px, 0.82fr);
@@ -458,7 +534,9 @@ footer button {
   .signal-strip,
   .workflow,
   .packages,
-  .fit-section {
+  .fit-section,
+  .vertical-grid,
+  .split-section {
     grid-template-columns: 1fr;
   }
 
