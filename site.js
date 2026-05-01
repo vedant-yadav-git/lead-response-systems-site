@@ -126,7 +126,7 @@ resize();
 draw();
 window.addEventListener("resize", resize);
 
-const contactEmail = "vedant@yadav.llc";
+const contactEmail = "vedantyadav2007@gmail.com";
 const auditForm = document.getElementById("auditForm");
 const copyRequest = document.getElementById("copyRequest");
 const copyEmail = document.getElementById("copyEmail");
