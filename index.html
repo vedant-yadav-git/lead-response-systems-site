@@ -17,7 +17,7 @@
         <a href="#system">System</a>
         <a href="#packages">Packages</a>
         <a href="#fit">Fit</a>
-        <a class="nav-action" href="mailto:vedant@yadav.llc?subject=Lead%20response%20audit">Request Audit</a>
+        <a class="nav-action" href="#audit-request">Request Audit</a>
       </nav>
     </header>
 
@@ -30,7 +30,7 @@
           <h1>Lead Response Systems</h1>
           <p class="hero-copy">A lightweight intake, alert, reply, and follow-up workflow so new inquiries do not quietly disappear between tools.</p>
           <div class="hero-actions">
-            <a class="button primary" href="mailto:vedant@yadav.llc?subject=Lead%20response%20audit">Request a Lead-Flow Audit</a>
+            <a class="button primary" href="#audit-request">Request a Lead-Flow Audit</a>
             <a class="button secondary" href="#system">See the System</a>
           </div>
         </div>
@@ -125,19 +125,41 @@
         </ul>
       </section>
 
-      <section class="section audit-section">
+      <section id="audit-request" class="section audit-section">
         <div>
           <p class="eyebrow">Start small</p>
           <h2>Ask for a 3-point lead-flow audit.</h2>
           <p>No long deck. Send the website and the main inquiry path, and get a practical read on where leads may slow down or get missed.</p>
         </div>
-        <a class="button primary" href="mailto:vedant@yadav.llc?subject=Lead%20response%20audit">Request Audit</a>
+        <form id="auditForm" class="audit-form">
+          <label>
+            <span>Business</span>
+            <input id="businessName" name="businessName" autocomplete="organization" placeholder="Company name">
+          </label>
+          <label>
+            <span>Website</span>
+            <input id="businessWebsite" name="businessWebsite" autocomplete="url" placeholder="https://example.com">
+          </label>
+          <label>
+            <span>Best email</span>
+            <input id="replyEmail" name="replyEmail" autocomplete="email" placeholder="you@example.com">
+          </label>
+          <label>
+            <span>Where inquiries arrive now</span>
+            <textarea id="leadSources" name="leadSources" placeholder="Website form, inbox, booking page, phone, CRM..."></textarea>
+          </label>
+          <div class="form-actions">
+            <button class="button primary" type="submit">Open Gmail Draft</button>
+            <button class="button neutral" type="button" id="copyRequest">Copy Request</button>
+          </div>
+          <p id="formStatus" class="form-status" role="status" aria-live="polite"></p>
+        </form>
       </section>
     </main>
 
     <footer>
       <span>Lead Response Systems</span>
-      <a href="mailto:vedant@yadav.llc">vedant@yadav.llc</a>
+      <button type="button" id="copyEmail">Copy email</button>
       <span>Built by Vedant Y.</span>
     </footer>
 

@@ -125,3 +125,55 @@ function draw() {
 resize();
 draw();
 window.addEventListener("resize", resize);
+
+const contactEmail = "vedant@yadav.llc";
+const auditForm = document.getElementById("auditForm");
+const copyRequest = document.getElementById("copyRequest");
+const copyEmail = document.getElementById("copyEmail");
+const formStatus = document.getElementById("formStatus");
+
+function fieldValue(id, fallback) {
+  const value = document.getElementById(id).value.trim();
+  return value || fallback;
+}
+
+function auditRequestText() {
+  return [
+    "Hi Vedant,",
+    "",
+    "I would like a 3-point lead-flow audit.",
+    "",
+    `Business: ${fieldValue("businessName", "[business name]")}`,
+    `Website: ${fieldValue("businessWebsite", "[website]")}`,
+    `Best email: ${fieldValue("replyEmail", "[reply email]")}`,
+    `Current inquiry sources: ${fieldValue("leadSources", "[website form, inbox, phone, booking page, CRM, etc.]")}`,
+    "",
+    "Please send back the places where inquiries may slow down or get missed.",
+  ].join("\n");
+}
+
+async function copyText(text, successMessage) {
+  try {
+    await navigator.clipboard.writeText(text);
+    formStatus.textContent = successMessage;
+  } catch {
+    formStatus.textContent = "Copy failed. Select the text manually or open Gmail.";
+  }
+}
+
+auditForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const subject = encodeURIComponent("Lead response audit request");
+  const body = encodeURIComponent(auditRequestText());
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(contactEmail)}&su=${subject}&body=${body}`;
+  window.open(gmailUrl, "_blank", "noopener,noreferrer");
+  formStatus.textContent = "Opening Gmail in your browser. The request text is ready in the draft.";
+});
+
+copyRequest.addEventListener("click", () => {
+  copyText(auditRequestText(), "Audit request copied.");
+});
+
+copyEmail.addEventListener("click", () => {
+  copyText(contactEmail, "Email copied.");
+});
