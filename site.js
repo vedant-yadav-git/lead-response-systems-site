@@ -1,5 +1,5 @@
 const canvas = document.getElementById("flowCanvas");
-const ctx = canvas.getContext("2d");
+const ctx = canvas ? canvas.getContext("2d") : null;
 
 const labels = [
   "Form",
@@ -18,6 +18,7 @@ let nodes = [];
 let frame = 0;
 
 function resize() {
+  if (!canvas || !ctx) return;
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   width = canvas.clientWidth;
   height = canvas.clientHeight;
@@ -44,6 +45,7 @@ function resize() {
 }
 
 function roundedRect(x, y, w, h, r) {
+  if (!ctx) return;
   ctx.beginPath();
   ctx.moveTo(x + r, y);
   ctx.arcTo(x + w, y, x + w, y + h, r);
@@ -54,6 +56,7 @@ function roundedRect(x, y, w, h, r) {
 }
 
 function drawLine(a, b, progress) {
+  if (!ctx) return;
   ctx.strokeStyle = "rgba(142, 215, 206, 0.26)";
   ctx.lineWidth = 1.2;
   ctx.beginPath();
@@ -70,6 +73,7 @@ function drawLine(a, b, progress) {
 }
 
 function drawNode(node, index) {
+  if (!ctx) return;
   const pulse = (Math.sin(frame * 0.025 + node.phase) + 1) / 2;
   const w = 132;
   const h = 48;
@@ -91,6 +95,7 @@ function drawNode(node, index) {
 }
 
 function drawGrid() {
+  if (!ctx) return;
   ctx.strokeStyle = "rgba(255, 255, 255, 0.055)";
   ctx.lineWidth = 1;
   const step = 56;
@@ -110,6 +115,7 @@ function drawGrid() {
 }
 
 function draw() {
+  if (!canvas || !ctx) return;
   frame += 1;
   ctx.clearRect(0, 0, width, height);
   drawGrid();
@@ -122,18 +128,24 @@ function draw() {
   requestAnimationFrame(draw);
 }
 
-resize();
-draw();
-window.addEventListener("resize", resize);
+if (canvas && ctx) {
+  resize();
+  draw();
+  window.addEventListener("resize", resize);
+}
 
 const contactEmail = "vedantyadav2007@gmail.com";
 const auditForm = document.getElementById("auditForm");
 const copyRequest = document.getElementById("copyRequest");
 const copyEmail = document.getElementById("copyEmail");
 const formStatus = document.getElementById("formStatus");
+const checkoutForm = document.getElementById("checkoutForm");
+const copyCheckoutRequest = document.getElementById("copyCheckoutRequest");
+const checkoutStatus = document.getElementById("checkoutStatus");
 
 function fieldValue(id, fallback) {
-  const value = document.getElementById(id).value.trim();
+  const field = document.getElementById(id);
+  const value = field ? field.value.trim() : "";
   return value || fallback;
 }
 
@@ -152,28 +164,67 @@ function auditRequestText() {
   ].join("\n");
 }
 
-async function copyText(text, successMessage) {
+function checkoutRequestText() {
+  return [
+    "Hi Vedant,",
+    "",
+    "I want to buy the $297 Lead Response Diagnostic.",
+    "",
+    `Business: ${fieldValue("checkoutBusiness", "[business name]")}`,
+    `Website: ${fieldValue("checkoutWebsite", "[website]")}`,
+    `Best email: ${fieldValue("checkoutEmail", "[reply email]")}`,
+    `Preferred payment method: ${fieldValue("checkoutMethod", "[Zelle, PayPal, Cash App, or Stripe invoice]")}`,
+    `Main inquiry path: ${fieldValue("checkoutPath", "[website form, inbox, phone, booking page, CRM, etc.]")}`,
+    "",
+    "Please send the payment request and next intake steps.",
+  ].join("\n");
+}
+
+async function copyText(text, successMessage, statusElement = formStatus) {
   try {
     await navigator.clipboard.writeText(text);
-    formStatus.textContent = successMessage;
+    if (statusElement) statusElement.textContent = successMessage;
   } catch {
-    formStatus.textContent = "Copy failed. Select the text manually or open Gmail.";
+    if (statusElement) statusElement.textContent = "Copy failed. Select the text manually or open Gmail.";
   }
 }
 
-auditForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-  const subject = encodeURIComponent("Lead response audit request");
-  const body = encodeURIComponent(auditRequestText());
-  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(contactEmail)}&su=${subject}&body=${body}`;
-  window.open(gmailUrl, "_blank", "noopener,noreferrer");
-  formStatus.textContent = "Opening Gmail in your browser. The request text is ready in the draft.";
-});
+if (auditForm) {
+  auditForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const subject = encodeURIComponent("Lead response audit request");
+    const body = encodeURIComponent(auditRequestText());
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(contactEmail)}&su=${subject}&body=${body}`;
+    window.open(gmailUrl, "_blank", "noopener,noreferrer");
+    formStatus.textContent = "Opening Gmail in your browser. The request text is ready in the draft.";
+  });
+}
 
-copyRequest.addEventListener("click", () => {
-  copyText(auditRequestText(), "Audit request copied.");
-});
+if (copyRequest) {
+  copyRequest.addEventListener("click", () => {
+    copyText(auditRequestText(), "Audit request copied.");
+  });
+}
 
-copyEmail.addEventListener("click", () => {
-  copyText(contactEmail, "Email copied.");
-});
+if (checkoutForm) {
+  checkoutForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const subject = encodeURIComponent("$297 lead response diagnostic payment request");
+    const body = encodeURIComponent(checkoutRequestText());
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(contactEmail)}&su=${subject}&body=${body}`;
+    window.open(gmailUrl, "_blank", "noopener,noreferrer");
+    checkoutStatus.textContent = "Opening Gmail in your browser. The payment request is ready in the draft.";
+  });
+}
+
+if (copyCheckoutRequest) {
+  copyCheckoutRequest.addEventListener("click", () => {
+    copyText(checkoutRequestText(), "Payment request copied.", checkoutStatus);
+  });
+}
+
+if (copyEmail) {
+  copyEmail.addEventListener("click", () => {
+    copyText(contactEmail, "Email copied.", formStatus || checkoutStatus);
+  });
+}

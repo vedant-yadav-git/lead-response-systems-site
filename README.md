@@ -12,6 +12,10 @@ Public website repo:
 
 https://github.com/vedant-yadav-git/lead-response-systems-site
 
+Primary money page:
+
+https://lead-response-systems.vercel.app/paid-diagnostic.html
+
 Deploy manually:
 
 ```bash
